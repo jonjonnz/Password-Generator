@@ -8,5 +8,5 @@ Used python3 and tkinter(absolute basics) for gui.
 
 The code is just a bunch of for loops working one after each other to print out many suitable combinations
 
-Couldn't convert the file to exe format coz of windows firewall kept preventing it from running( worked on ubuntu 16.04)
+Couldn't convert the file to exe format because windows firewall kept preventing it from running( worked on ubuntu 16.04)
 maybe try doing it on ubuntu or linux if needed
