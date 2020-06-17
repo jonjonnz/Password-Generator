@@ -31,7 +31,7 @@ def gen_passwords():
     combined_list_of_names_and_dates = combine_names_and_dates(combined_list_of_names, list_of_corrected_dates)
 
     # Create File with the specific name
-    filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__'+((str(min)+'_'+str(max)) if exact is None else str(exact)) + '.txt'
+    filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__' + ((str(min) + '_' + str(max)) if exact is None else str(exact)) + '.txt'
     file = open(filename, 'w+')
     file.write('Possible common passwords with the inputs "{}" as name and "{}/{}/{}" as birthday are as follows :\n'.format(name_entry.get(),
                                                                                                                              date_entry_day.get(),
