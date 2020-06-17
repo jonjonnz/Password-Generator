@@ -6,20 +6,20 @@ def gen_passwords():
     if name_entry.get() == '' or 'John' in name_entry.get() or '' in [date_entry_day.get(), date_entry_mon.get(), date_entry_year.get()]:
         return None  # Return None if the entries are empty or basic values
     keywords = keywords_entry.get().split(',')
-    exact = int(length_entry_exact.get()) if length_entry_exact.get() is not None and length_entry_exact.get() != '' else None
-    min = int(length_entry_min.get() if length_entry_min.get() and length_entry_min.get() != '' else 7)
-    max = int(length_entry_max.get() if length_entry_max.get() and length_entry_max.get() != '' else 17)
+    exact_length = int(length_entry_exact.get()) if length_entry_exact.get() is not None and length_entry_exact.get() != '' else None
+    min_length = int(length_entry_min.get() if length_entry_min.get() and length_entry_min.get() != '' else 7)
+    max_length = int(length_entry_max.get() if length_entry_max.get() and length_entry_max.get() != '' else 17)
     # Generate Name Permutations
     name_list = name_entry.get().split(' ')
-    Nlist = name_permutations(name_list)
-    Ulist = name_permutations([x.upper() for x in name_list])
-    Llist = name_permutations([x.lower() for x in name_list])
+    normal_case_list = name_permutations(name_list)
+    upper_case_list = name_permutations([x.upper() for x in name_list])
+    lower_case_list = name_permutations([x.lower() for x in name_list])
     combined_list_of_names = []
     for key in keywords:
         combined_list_of_names.append(key)
-    remove_duplicate(Nlist, combined_list_of_names)
-    remove_duplicate(Ulist, combined_list_of_names)
-    remove_duplicate(Llist, combined_list_of_names)
+    remove_duplicate(normal_case_list, combined_list_of_names)
+    remove_duplicate(upper_case_list, combined_list_of_names)
+    remove_duplicate(lower_case_list, combined_list_of_names)
 
     # Generate Date Permutations
     date_list = [date_entry_day.get(), date_entry_mon.get(), date_entry_year.get()]
@@ -31,22 +31,22 @@ def gen_passwords():
     combined_list_of_names_and_dates = combine_names_and_dates(combined_list_of_names, list_of_corrected_dates)
 
     # Create File with the specific name
-    filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__' + ((str(min) + '_' + str(max)) if exact is None else str(exact)) + '.txt'
+    filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__' + ((str(min_length) + '_' + str(max_length)) if exact_length is None else str(exact_length)) + '.txt'
     file = open(filename, 'w+')
     file.write('Possible common passwords with the inputs "{}" as name and "{}/{}/{}" as birthday are as follows :\n'.format(name_entry.get(),
                                                                                                                              date_entry_day.get(),
                                                                                                                              date_entry_mon.get(),
                                                                                                                              date_entry_year.get()))
     file.write('NOTE ALL THE PASSWORDS PROVIDED BELOW ARE JUST A RESULT OF MULTIPLE PERMUTATIONS AND COMBINATIONS.\n')
-    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if min-1 < len(x) < max+1]) if exact is None else len([x for x in combined_list_of_names_and_dates if len(x) == exact])))
+    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if min_length-1 < len(x) < max_length+1]) if exact_length is None else len([x for x in combined_list_of_names_and_dates if len(x) == exact_length])))
     file.write('\n')
-    if exact is None:
+    if exact_length is None:
         for i in combined_list_of_names_and_dates:
-            if min-1 < len(i) < max+1:
+            if min_length-1 < len(i) < max_length+1:
                 file.write(i + '\n')  # Write possible options to file
     else:
         for i in combined_list_of_names_and_dates:
-            if len(i) == exact:
+            if len(i) == exact_length:
                 file.write(i + '\n')
     file.close()  # Closing the file after done
 
