@@ -5,13 +5,18 @@ def gen_passwords():
     """Generate passwords with the provided inputs"""
     if name_entry.get() == '' or 'John' in name_entry.get() or '' in [date_entry_day.get(), date_entry_mon.get(), date_entry_year.get()]:
         return None  # Return None if the entries are empty or basic values
-
+    keywords = keywords_entry.get().split(',')
+    exact = int(length_entry_exact.get()) if length_entry_exact.get() is not None and length_entry_exact.get() != '' else None
+    min = int(length_entry_min.get() if length_entry_min.get() and length_entry_min.get() != '' else 7)
+    max = int(length_entry_max.get() if length_entry_max.get() and length_entry_max.get() != '' else 17)
     # Generate Name Permutations
     name_list = name_entry.get().split(' ')
     Nlist = name_permutations(name_list)
     Ulist = name_permutations([x.upper() for x in name_list])
     Llist = name_permutations([x.lower() for x in name_list])
     combined_list_of_names = []
+    for key in keywords:
+        combined_list_of_names.append(key)
     remove_duplicate(Nlist, combined_list_of_names)
     remove_duplicate(Ulist, combined_list_of_names)
     remove_duplicate(Llist, combined_list_of_names)
@@ -26,18 +31,23 @@ def gen_passwords():
     combined_list_of_names_and_dates = combine_names_and_dates(combined_list_of_names, list_of_corrected_dates)
 
     # Create File with the specific name
-    filename = name_list[0] + '.txt'
+    filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__'+((str(min)+'_'+str(max)) if exact is None else str(exact)) + '.txt'
     file = open(filename, 'w+')
     file.write('Possible common passwords with the inputs "{}" as name and "{}/{}/{}" as birthday are as follows :\n'.format(name_entry.get(),
                                                                                                                              date_entry_day.get(),
                                                                                                                              date_entry_mon.get(),
                                                                                                                              date_entry_year.get()))
     file.write('NOTE ALL THE PASSWORDS PROVIDED BELOW ARE JUST A RESULT OF MULTIPLE PERMUTATIONS AND COMBINATIONS.\n')
-    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if 7 < len(x) < 17])))
+    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if min < len(x) < max]) if exact is None else len([x for x in combined_list_of_names_and_dates if len(x) == exact])))
     file.write('\n')
-    for i in combined_list_of_names_and_dates:
-        if 7 < len(i) < 17:
-            file.write(i + '\n')  # Write possible options to file
+    if exact is None:
+        for i in combined_list_of_names_and_dates:
+            if min < len(i) < max:
+                file.write(i + '\n')  # Write possible options to file
+    else:
+        for i in combined_list_of_names_and_dates:
+            if len(i) == exact:
+                file.write(i + '\n')
     file.close()  # Closing the file after done
 
 
@@ -229,7 +239,7 @@ def clear_nd():
 window = Tk()
 
 window.title('Password Generator')
-window.geometry('500x150+400+150')
+window.geometry('600x150+400+150')
 
 # Defaults
 small_box_width = 5
@@ -269,13 +279,13 @@ length_entry_max = Entry(window, width=small_box_width)
 gen_button = Button(window, text='Generate', width=button_width, command=gen_passwords)
 clear_name_date = Button(window, text='Clear', width=button_width, command=clear_nd)
 clear_keyword_length = Button(window, text='Clear', width=button_width, command=clear_kl)
-clear_all = Button(window, text='Clear', width=button_width, command=clear_entries)
+clear_all = Button(window, text='Clear All', width=button_width, command=clear_entries)
 
 # Create Grid
 name_label_top.grid(row=row_set_1, column=1), date_label_day.grid(row=row_set_1, column=3), date_label_mon.grid(row=row_set_1, column=4), date_label_year.grid(row=row_set_1, column=5)
 name_label.grid(row=row_set_2, column=0, sticky=E), name_entry.grid(row=row_set_2, column=1), date_label.grid(row=row_set_2, column=2, sticky=E), date_entry_day.grid(row=row_set_2, column=3), date_entry_mon.grid(row=row_set_2, column=4), date_entry_year.grid(row=row_set_2, column=5), clear_name_date.grid(row=row_set_2, column=6)
-keywords_label_top.grid(row=row_set_3, column=1), length_label_exact.grid(row=row_set_3, column=3), length_label_min.grid(row=row_set_3, column=4), length_label_max.grid(row=row_set_3, column=5)
-keywords_label.grid(row=row_set_4, column=0), keywords_entry.grid(row=row_set_4, column=1), length_label.grid(row=row_set_4, column=2, sticky=E), length_entry_exact.grid(row=row_set_4, column=3), length_entry_min.grid(row=row_set_4, column=4), length_entry_max.grid(row=row_set_4, column=5), clear_keyword_length.grid(row=row_set_4, column=6)
-gen_button.grid(row=row_set_5, column=2,sticky=E), clear_all.grid(row=row_set_5, column=6)
+length_label_exact.grid(row=row_set_3, column=3), length_label_min.grid(row=row_set_3, column=4), length_label_max.grid(row=row_set_3, column=5)
+length_label.grid(row=row_set_4, column=2, sticky=E), length_entry_exact.grid(row=row_set_4, column=3), length_entry_min.grid(row=row_set_4, column=4), length_entry_max.grid(row=row_set_4, column=5), clear_keyword_length.grid(row=row_set_4, column=6)
+gen_button.grid(row=row_set_5, column=2, sticky=E), clear_all.grid(row=row_set_5, column=6)
 
 window.mainloop()
