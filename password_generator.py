@@ -38,11 +38,11 @@ def gen_passwords():
                                                                                                                              date_entry_mon.get(),
                                                                                                                              date_entry_year.get()))
     file.write('NOTE ALL THE PASSWORDS PROVIDED BELOW ARE JUST A RESULT OF MULTIPLE PERMUTATIONS AND COMBINATIONS.\n')
-    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if min < len(x) < max]) if exact is None else len([x for x in combined_list_of_names_and_dates if len(x) == exact])))
+    file.write('Total number of passwords found : {}'.format(len([x for x in combined_list_of_names_and_dates if min-1 < len(x) < max+1]) if exact is None else len([x for x in combined_list_of_names_and_dates if len(x) == exact])))
     file.write('\n')
     if exact is None:
         for i in combined_list_of_names_and_dates:
-            if min < len(i) < max:
+            if min-1 < len(i) < max+1:
                 file.write(i + '\n')  # Write possible options to file
     else:
         for i in combined_list_of_names_and_dates:
