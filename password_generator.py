@@ -3,8 +3,7 @@ from tkinter import *
 
 def gen_passwords():
     """Generate passwords with the provided inputs"""
-    if name_entry.get() == '' or 'John' in name_entry.get() or '' in [date_entry_day.get(), date_entry_mon.get(),
-                                                                      date_entry_year.get()] or date_entry_day.get() == 'dd' or date_entry_mon.get() == 'mm' or date_entry_year.get() == 'yyyy':
+    if name_entry.get() == '' or 'John' in name_entry.get() or '' in [date_entry_day.get(), date_entry_mon.get(), date_entry_year.get()]:
         return None  # Return None if the entries are empty or basic values
 
     # Generate Name Permutations
@@ -40,13 +39,6 @@ def gen_passwords():
         if 7 < len(i) < 17:
             file.write(i + '\n')  # Write possible options to file
     file.close()  # Closing the file after done
-
-    # Resetting Entries for another input
-    name_entry.delete(0, END)
-    date_entry_day.delete(0, END)
-    date_entry_mon.delete(0, END)
-    date_entry_year.delete(0, END)
-
 
 def name_permutations(name_list):
     """Divide the name into list with space as the splitter and using three for loops for now in terms of Fullname Middlename Lastname and
@@ -195,34 +187,66 @@ def combine_names_and_dates(combined_list_of_names, list_of_corrected_dates):
     return combined_list_of_both
 
 
+# # Placeholder class for entries
+# class PlaceHolderEntry(Entry):
+#     def __init__(self, container, placeholder, *args, **kwargs):
+#         super(PlaceHolderEntry, self).__init__(container, *args, **kwargs)
+#         self.placeholder = placeholder
+#         self.insert(1, self.placeholder)
+#         self.bind("<FocusIn>", self._clear_placeholder)
+#         self.bind("<FocusOut>", self._add_placeholder)
+#
+#     def _clear_placeholder(self, e):
+#         self.delete(0, "end")
+#
+#
+#     def _add_placeholder(self, e):
+#         if not self.get():
+#             self.insert(0, self.placeholder)
+
+
 # Creating a main window for the program
 window = Tk()
+
 window.title('Password Generator')
-window.geometry('300x100')
+window.geometry('500x500+400+150')
+
+# Defaults
+small_box_width = 5
+large_box_width = 25
+row_set_1 = 0
+row_set_2 = 1
+row_set_3 = 2
+row_set_4 = 5
 
 # Creating Labels
-name_label = Label(window, text='Enter Full Name :')
-date_label = Label(window, text='Birthday :')
+name_label = Label(window, text='*Name :')
+name_label_top = Label(window, text='Enter Full name')
+date_label = Label(window, text='    *Birthday :')
+date_label_day = Label(window, text='dd', width=small_box_width)
+date_label_mon = Label(window, text='|   mm  |', width=small_box_width)
+date_label_year = Label(window, text='yyyy', width=small_box_width)
+keywords_label = Label(window, text='Keywords :')
+keywords_label_top = Label(window, text='Enter Keywords(use comma)')
+length_label = Label(window, text='Length :')
+length_label_min = Label(window, text='min')
+length_label_exact = Label(window, text='exact')
+length_label_max = Label(window, text='max')
 
 # Creating Entry boxes
-name_entry = Entry(window, width='17')
-name_entry.insert(0, 'John')
-date_entry_day = Entry(window, width='5')
-date_entry_day.insert(0, 'dd')
-date_entry_mon = Entry(window, width='5')
-date_entry_mon.insert(0, 'mm')
-date_entry_year = Entry(window, width='5')
-date_entry_year.insert(0, 'yyyy')
+name_entry = Entry(window, width=large_box_width)
+date_entry_day = Entry(window, width=small_box_width)
+date_entry_mon = Entry(window, width=small_box_width)
+date_entry_year = Entry(window, width=small_box_width)
+keywords_entry = Entry(window, width=large_box_width)
 
 # Creating Button to call the generate function
-gen_button = Button(window, text='Generate', command=gen_passwords, width='14')
+gen_button = Button(window, text='Generate', command=gen_passwords)
 
-# Creating grid for all the widgets
-name_label.grid(row=0, sticky=E)
-date_label.grid(row=1, sticky=E)
-name_entry.grid(row=0, column=1, columnspan=3)
-date_entry_day.grid(row=1, column=1)
-date_entry_mon.grid(row=1, column=2)
-date_entry_year.grid(row=1, column=3)
-gen_button.grid(row=2, column=1, columnspan=3)
+# Create Grid
+name_label_top.grid(row=0, column=1), date_label_day.grid(row=0, column=3), date_label_mon.grid(row=0, column=4), date_label_year.grid(row=0, column=5)
+name_label.grid(row=1, column=0, sticky=E), name_entry.grid(row=1, column=1), date_label.grid(row=1, column=2, sticky=E), date_entry_day.grid(row=1, column=3), date_entry_mon.grid(row=1, column=4), date_entry_year.grid(row=1, column=5)
+keywords_label_top.grid(row=2, column=1)
+keywords_label.grid(row=3, column=0), keywords_entry.grid(row=3, column=1)
+gen_button.grid(row=4, column=1)
 window.mainloop()
