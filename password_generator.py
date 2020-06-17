@@ -40,6 +40,7 @@ def gen_passwords():
             file.write(i + '\n')  # Write possible options to file
     file.close()  # Closing the file after done
 
+
 def name_permutations(name_list):
     """Divide the name into list with space as the splitter and using three for loops for now in terms of Fullname Middlename Lastname and
         also using abbreviations of different combinations """
@@ -187,6 +188,25 @@ def combine_names_and_dates(combined_list_of_names, list_of_corrected_dates):
     return combined_list_of_both
 
 
+def clear_entries():
+    clear_nd()
+    clear_kl()
+
+
+def clear_kl():
+    keywords_entry.delete(0, END)
+    length_entry_exact.delete(0, END)
+    length_entry_min.delete(0, END)
+    length_entry_max.delete(0, END)
+
+
+def clear_nd():
+    name_entry.delete(0, END)
+    date_entry_day.delete(0, END)
+    date_entry_mon.delete(0, END)
+    date_entry_year.delete(0, END)
+
+
 # # Placeholder class for entries
 # class PlaceHolderEntry(Entry):
 #     def __init__(self, container, placeholder, *args, **kwargs):
@@ -209,29 +229,31 @@ def combine_names_and_dates(combined_list_of_names, list_of_corrected_dates):
 window = Tk()
 
 window.title('Password Generator')
-window.geometry('500x500+400+150')
+window.geometry('500x150+400+150')
 
 # Defaults
 small_box_width = 5
 large_box_width = 25
+button_width = 7
 row_set_1 = 0
 row_set_2 = 1
 row_set_3 = 2
-row_set_4 = 5
+row_set_4 = 3
+row_set_5 = 4
 
 # Creating Labels
 name_label = Label(window, text='*Name :')
 name_label_top = Label(window, text='Enter Full name')
 date_label = Label(window, text='    *Birthday :')
-date_label_day = Label(window, text='dd', width=small_box_width)
-date_label_mon = Label(window, text='|   mm  |', width=small_box_width)
-date_label_year = Label(window, text='yyyy', width=small_box_width)
+date_label_day = Label(window, text='DD', width=small_box_width)
+date_label_mon = Label(window, text='|   MM  |', width=small_box_width)
+date_label_year = Label(window, text='YYYY', width=small_box_width)
 keywords_label = Label(window, text='Keywords :')
 keywords_label_top = Label(window, text='Enter Keywords(use comma)')
 length_label = Label(window, text='Length :')
-length_label_min = Label(window, text='min')
-length_label_exact = Label(window, text='exact')
-length_label_max = Label(window, text='max')
+length_label_exact = Label(window, text='Exact')
+length_label_min = Label(window, text='Min')
+length_label_max = Label(window, text='Max')
 
 # Creating Entry boxes
 name_entry = Entry(window, width=large_box_width)
@@ -239,14 +261,21 @@ date_entry_day = Entry(window, width=small_box_width)
 date_entry_mon = Entry(window, width=small_box_width)
 date_entry_year = Entry(window, width=small_box_width)
 keywords_entry = Entry(window, width=large_box_width)
+length_entry_exact = Entry(window, width=small_box_width)
+length_entry_min = Entry(window, width=small_box_width)
+length_entry_max = Entry(window, width=small_box_width)
 
 # Creating Button to call the generate function
-gen_button = Button(window, text='Generate', command=gen_passwords)
+gen_button = Button(window, text='Generate', width=button_width, command=gen_passwords)
+clear_name_date = Button(window, text='Clear', width=button_width, command=clear_nd)
+clear_keyword_length = Button(window, text='Clear', width=button_width, command=clear_kl)
+clear_all = Button(window, text='Clear', width=button_width, command=clear_entries)
 
 # Create Grid
-name_label_top.grid(row=0, column=1), date_label_day.grid(row=0, column=3), date_label_mon.grid(row=0, column=4), date_label_year.grid(row=0, column=5)
-name_label.grid(row=1, column=0, sticky=E), name_entry.grid(row=1, column=1), date_label.grid(row=1, column=2, sticky=E), date_entry_day.grid(row=1, column=3), date_entry_mon.grid(row=1, column=4), date_entry_year.grid(row=1, column=5)
-keywords_label_top.grid(row=2, column=1)
-keywords_label.grid(row=3, column=0), keywords_entry.grid(row=3, column=1)
-gen_button.grid(row=4, column=1)
+name_label_top.grid(row=row_set_1, column=1), date_label_day.grid(row=row_set_1, column=3), date_label_mon.grid(row=row_set_1, column=4), date_label_year.grid(row=row_set_1, column=5)
+name_label.grid(row=row_set_2, column=0, sticky=E), name_entry.grid(row=row_set_2, column=1), date_label.grid(row=row_set_2, column=2, sticky=E), date_entry_day.grid(row=row_set_2, column=3), date_entry_mon.grid(row=row_set_2, column=4), date_entry_year.grid(row=row_set_2, column=5), clear_name_date.grid(row=row_set_2, column=6)
+keywords_label_top.grid(row=row_set_3, column=1), length_label_exact.grid(row=row_set_3, column=3), length_label_min.grid(row=row_set_3, column=4), length_label_max.grid(row=row_set_3, column=5)
+keywords_label.grid(row=row_set_4, column=0), keywords_entry.grid(row=row_set_4, column=1), length_label.grid(row=row_set_4, column=2, sticky=E), length_entry_exact.grid(row=row_set_4, column=3), length_entry_min.grid(row=row_set_4, column=4), length_entry_max.grid(row=row_set_4, column=5), clear_keyword_length.grid(row=row_set_4, column=6)
+gen_button.grid(row=row_set_5, column=2,sticky=E), clear_all.grid(row=row_set_5, column=6)
+
 window.mainloop()
