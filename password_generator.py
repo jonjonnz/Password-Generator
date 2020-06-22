@@ -70,8 +70,8 @@ def gen_passwords():
 
     # Get Length
     exact_length = int(length_entry_exact.get()) if length_entry_exact.get() is not None and length_entry_exact.get() != '' else None
-    min_length = int(length_entry_min.get() if length_entry_min.get() and length_entry_min.get() != '' else 7)
-    max_length = int(length_entry_max.get() if length_entry_max.get() and length_entry_max.get() != '' else 17)
+    min_length = int(length_entry_min.get() if length_entry_min.get() and length_entry_min.get() != '' else 8)
+    max_length = int(length_entry_max.get() if length_entry_max.get() and length_entry_max.get() != '' else 16)
 
     # Create File with the specific name
     filename = name_list[0] + '_' + date_entry_day.get() + date_entry_mon.get() + date_entry_year.get() + '__' + ((str(min_length) + '_' + str(max_length)) if exact_length is None else str(exact_length)) + '.txt'
